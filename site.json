@@ -16,7 +16,9 @@
       "details": [
         "用短暂烟雾遮挡视线，结合突进调整位置。",
         "求职表达：能够快速进入工作现场，后续协作请队友及时跟进。"
-      ]
+      ],
+      "image": "assets/media/cloudburst.png",
+      "image_alt": "瞬云 Cloudburst 官方技能图标"
     },
     {
       "title": "垂直机动与交战角度",
@@ -24,7 +26,9 @@
       "details": [
         "利用腾空与滑翔改变移动轨迹。",
         "求职表达：面对常规路线受阻的情况，愿意换个高度考虑问题。"
-      ]
+      ],
+      "image": "assets/media/updraft.png",
+      "image_alt": "凌空 Updraft 官方技能图标"
     },
     {
       "title": "飞刀交战",
@@ -32,7 +36,9 @@
       "details": [
         "利用飞刀进行精确攻击，并区分单发与齐射的补充规则。",
         "求职表达：自带工具，但命中率仍取决于操作。"
-      ]
+      ],
+      "image": "assets/media/blade-storm.png",
+      "image_alt": "飓刃 Blade Storm 官方技能图标"
     }
   ],
   "skills": [

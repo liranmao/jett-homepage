@@ -24,7 +24,7 @@ THEMES = {item['id']: item for item in CATALOG['themes']}
 BACKGROUNDS = {'none'} | {item['id'] for item in CATALOG['effects']}
 LISTS = {'about', 'links', 'publications', 'projects', 'experience', 'education',
          'awards', 'skills', 'service', 'section_order'}
-ENTRY_KEYS = {'title', 'organization', 'dates', 'details', 'url', 'group'}
+ENTRY_KEYS = {'title', 'organization', 'dates', 'details', 'url', 'group', 'image', 'image_alt'}
 PUB_KEYS = {'title', 'authors', 'venue', 'year', 'badge', 'notes', 'image', 'links'}
 ORDER = ['about', 'publications', 'projects', 'experience', 'education', 'awards', 'skills', 'service']
 
@@ -112,7 +112,7 @@ def validate(data, root=None):
                     raise ValueError(field + ' must be text.')
             if item.get('url'):
                 safe_url(item['url'])
-    media = [data.get('avatar'), data.get('cv')] + [p.get('image') for p in data.get('publications', [])]
+    media = [data.get('avatar'), data.get('cv')] + [p.get('image') for section in ('publications', 'projects', 'experience', 'education', 'service') for p in data.get(section, [])]
     for path in filter(None, media):
         relative = local_media(path)
         if root:
@@ -186,7 +186,10 @@ def render(data, template):
                     content += '<h3>{}</h3>'.format(esc(group))
                 previous_group = group
                 title = link(item['title'], item['url']) if item.get('url') else esc(item['title'])
-                content += '<div class="entry"><p><strong>{}</strong>'.format(title)
+                content += '<div class="entry{}">'.format(' entry-with-image' if item.get('image') else '')
+                if item.get('image'):
+                    content += '<img class="project-image" src="{}" alt="{}" width="96" height="96" loading="lazy">'.format(esc(item['image']), esc(item.get('image_alt', item['title'])))
+                content += '<div class="entry-body"><p><strong>{}</strong>'.format(title)
                 if item.get('organization'):
                     content += '<br><em>{}</em>'.format(esc(item['organization']))
                 if item.get('dates'):
@@ -194,7 +197,7 @@ def render(data, template):
                 content += '</p>'
                 if item.get('details'):
                     content += '<ul>' + ''.join('<li>{}</li>'.format(esc(x)) for x in item['details']) + '</ul>'
-                content += '</div>'
+                content += '</div></div>'
         sections.append('<article class="section-{3}" aria-labelledby="{0}"><h2 id="{0}">{1}</h2>{2}</article>'.format(anchor, labels[key], content, key))
     canonical = '<link rel="canonical" href="{}">'.format(esc(data['site_url'])) if data.get('site_url') else ''
     return Template(template).substitute(
@@ -224,7 +227,7 @@ def build(root):
                 dest = docs / 'assets' / folder / source.name
                 dest.parent.mkdir(parents=True, exist_ok=True)
                 shutil.copy2(source, dest)
-    media = [data.get('avatar'), data.get('cv')] + [p.get('image') for p in data.get('publications', [])]
+    media = [data.get('avatar'), data.get('cv')] + [p.get('image') for section in ('publications', 'projects', 'experience', 'education', 'service') for p in data.get(section, [])]
     for relative in filter(None, media):
         relative = local_media(relative)
         dest = docs / relative

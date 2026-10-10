@@ -71,3 +71,12 @@ a:focus-visible, button:focus-visible { outline: 3px solid #cc9800; outline-offs
 
 /* Keep the face visible in the official Jett portrait. */
 body[data-theme="classic"] .image.avatar img { object-position: center top; }
+
+/* Official ability illustrations alongside the project descriptions. */
+.entry-with-image { display: flex; align-items: flex-start; gap: 20px; margin-bottom: 28px; }
+.project-image { flex: 0 0 96px; width: 96px; height: 96px; object-fit: contain; padding: 16px; background: #111c35; border-radius: 4px; }
+.entry-body { min-width: 0; }
+@media screen and (max-width: 540px) {
+  .entry-with-image { gap: 14px; }
+  .project-image { flex-basis: 64px; width: 64px; height: 64px; padding: 10px; }
+}
